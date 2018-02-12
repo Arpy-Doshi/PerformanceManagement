@@ -27,22 +27,5 @@ public class PerformanceManagementController
         System.out.println("Assessment form is viewed!!!");
     }
 
-    @RequestMapping(value = "/createForm",method = RequestMethod.POST)
-    public void createForm() throws Exception
-    {
-        System.out.println("Assessment form is created by HR!!!");
-    }
-
-    @RequestMapping(value = "/updateForm",method = RequestMethod.PUT)
-    public void updateAssessmentForm() throws Exception
-    {
-        System.out.println("Assessment form is updated by HR!!!");
-    }
-
-    @RequestMapping(value = "/deleteForm",method = RequestMethod.DELETE)
-    public void deleteAssessmentForm() throws Exception
-    {
-        System.out.println("Assessment form is deleted by HR!!!");
-    }
 
 }
