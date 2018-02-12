@@ -4,6 +4,8 @@ public class Employee
 {
     private String id;
     private String name;
+    private String department;
+    AssessmentForm assessmentForm;
 
     public String getId() {
         return id;
@@ -21,11 +23,20 @@ public class Employee
         this.name = name;
     }
 
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
                 '}';
     }
 }
