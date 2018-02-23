@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pm-employee")
+@RequestMapping("/employee")
 
 public class EmployeeController
 {
