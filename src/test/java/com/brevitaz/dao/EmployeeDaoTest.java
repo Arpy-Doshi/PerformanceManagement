@@ -19,7 +19,7 @@ public class EmployeeDaoTest
     EmployeeDao employeeDao;
 
     @Test
-    public void createTest() throws IOException {
+    public void createTest() {
         Employee employee = new Employee();
         employee.setId("1");
         employee.setName("Arpy");
@@ -31,7 +31,7 @@ public class EmployeeDaoTest
 
 
     @Test
-    public void getByIdTest() throws IOException {
+    public void getByIdTest()  {
         Employee employee = new Employee();
         employee.setId("2");
         employee.setName("Yash");
@@ -45,7 +45,7 @@ public class EmployeeDaoTest
     }
 
     @Test
-    public void updateTest() throws IOException {
+    public void updateTest(){
         Employee employee = new Employee();
         employee.setId("3");
         employee.setName("Anushka");
@@ -62,7 +62,7 @@ public class EmployeeDaoTest
 
 
     @Test
-    public void getAllTest() throws IOException {
+    public void getAllTest() {
         Employee employee = new Employee();
         employee.setId("4");
         employee.setName("Pr");
@@ -76,7 +76,7 @@ public class EmployeeDaoTest
     }
 
     @Test
-    public void deleteTest() throws IOException {
+    public void deleteTest(){
 
         Employee employee = new Employee();
         employee.setId("5");

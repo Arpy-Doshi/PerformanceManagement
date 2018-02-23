@@ -4,6 +4,7 @@ import com.brevitaz.config.ElasticConfig;
 import com.brevitaz.dao.EmployeeDao;
 import com.brevitaz.model.Employee;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -38,18 +39,28 @@ public class EmployeeDaoImpl implements EmployeeDao
     ElasticConfig client;
 
     @Override
-    public boolean create(Employee employee) throws IOException {
+    public boolean create(Employee employee)  {
         IndexRequest request = new IndexRequest(
                 INDEX_NAME,
                 TYPE_NAME,""+employee.getId()
         );
 
         //ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(employee);
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(employee);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         request.source(json, XContentType.JSON);
 
-        IndexResponse indexResponse= client.getClient().index(request);
+        IndexResponse indexResponse= null;
+        try {
+            indexResponse = client.getClient().index(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println(indexResponse);
 
@@ -57,18 +68,27 @@ public class EmployeeDaoImpl implements EmployeeDao
     }
 
     @Override
-    public List<Employee> getAll() throws IOException {
+    public List<Employee> getAll()  {
         List<Employee> employees = new ArrayList<>();
         SearchRequest request = new SearchRequest(INDEX_NAME);
         request.types(TYPE_NAME);
-        SearchResponse response = client.getClient().search(request);
+        SearchResponse response = null;
+        try {
+            response = client.getClient().search(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SearchHit[] hits = response.getHits().getHits();
 
-        Employee employee;
+        Employee employee = null;
 
         for (SearchHit hit : hits)
         {
-            employee = objectMapper.readValue(hit.getSourceAsString(), Employee.class);
+            try {
+                employee = objectMapper.readValue(hit.getSourceAsString(), Employee.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             employees.add(employee);
         }
         return employees;
@@ -76,24 +96,39 @@ public class EmployeeDaoImpl implements EmployeeDao
     }
 
     @Override
-    public boolean update(Employee employee,String id) throws IOException {
+    public boolean update(Employee employee,String id) {
         ObjectMapper objectMapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        UpdateRequest updateRequest = new UpdateRequest(
-                INDEX_NAME,TYPE_NAME,
-                id).doc(objectMapper.writeValueAsString(employee), XContentType.JSON);
-        UpdateResponse updateResponse = client.getClient().update(updateRequest);
+        UpdateRequest updateRequest = null;
+        try {
+            updateRequest = new UpdateRequest(
+                    INDEX_NAME,TYPE_NAME,
+                    id).doc(objectMapper.writeValueAsString(employee), XContentType.JSON);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        UpdateResponse updateResponse = null;
+        try {
+            updateResponse = client.getClient().update(updateRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Update: "+updateResponse);
         return true;
     }
 
     @Override
-    public boolean delete(String id) throws IOException {
+    public boolean delete(String id)  {
         DeleteRequest request = new DeleteRequest(
                 INDEX_NAME,
                 TYPE_NAME,
                 id);
 
-        DeleteResponse response = client.getClient().delete(request);
+        DeleteResponse response = null;
+        try {
+            response = client.getClient().delete(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         System.out.println(response.status());
 
@@ -102,17 +137,27 @@ public class EmployeeDaoImpl implements EmployeeDao
     }
 
     @Override
-    public Employee getById(String id) throws IOException {
+    public Employee getById(String id) {
         GetRequest getRequest = new GetRequest(
                 INDEX_NAME,
                 TYPE_NAME,
                 id);
 
-        GetResponse getResponse = client.getClient().get(getRequest);
+        GetResponse getResponse = null;
+        try {
+            getResponse = client.getClient().get(getRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        Employee employee  = objectMapper.readValue(getResponse.getSourceAsString(),Employee.class);
+        Employee employee  = null;
+        try {
+            employee = objectMapper.readValue(getResponse.getSourceAsString(),Employee.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         System.out.println(employee);
